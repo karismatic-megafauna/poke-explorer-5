@@ -21,25 +21,35 @@ class App extends Component {
         <Search
           placeholder="input search text"
           style={{ width: 200 }}
-          onChange={e => this.setState({searchTerm: e.target.value})}
+          onChange={e => this.setState({searchTerm: e.target.value.toLowerCase()})}
         />
-      <div className = "Container">
-          {pokemonNames.map((name) => {
-            const pokemon = pokemonMetadata[name]
-            return (
-              <PokemonCard
-                name={pokemon.name}
-                id={pokemon.id}
-                imgSource={pokemon.sprites.front_default}
-              />
-            )
-          })}
+        <div className = "Container">
+          {pokemonNames
+              .filter((name) => {
+                return name.includes(this.state.searchTerm);
+              })
+              .map((name) => {
+                const pokemon = pokemonMetadata[name]
+                return (
+                  <PokemonCard
+                    name={toTitleCase(pokemon.name)}
+                    id={pokemon.id}
+                    imgSource={pokemon.sprites.front_default}
+                  />
+                )
+              })
+          }
         </div>
       </div>
     );
   }
 }
 
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, (txt) => {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
 
 function PokemonCard(props) {
   return (
