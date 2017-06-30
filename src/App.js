@@ -16,8 +16,23 @@ class App extends Component {
     super(props);
     this.state = {
       searchTerm: "",
-      data: {},
+      pokeData: {},
     };
+  }
+
+  componentWillMount() {
+    fetch('https://pokeapi.co/api/v2/generation/1/')
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log('Here is the data!', data);
+        // let's set it in the state as pokeData just to be clear :)
+        this.setState({ pokeData: data });
+      })
+      .catch((error) => {
+        console.log('Aw man, we hit an error:', error);
+      });
   }
 
   render() {
