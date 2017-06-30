@@ -11,26 +11,6 @@ import {
 
 const Search = Input.Search;
 
-
-// const BasicExample = () => (
-  // <Router>
-  //   <div>
-  //     <ul>
-  //       <li><Link to="/">Home</Link></li>
-  //       <li><Link to="/about">About</Link></li>
-  //       <li><Link to="/topics">Topics</Link></li>
-  //     </ul>
-  //
-  //     <hr/>
-  //
-  //     <Route exact path="/" component={Home}/>
-  //     <Route path="/about" component={About}/>
-  //     <Route path="/topics" component={Topics}/>
-  //   </div>
-  // </Router>
-// )
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +19,7 @@ class App extends Component {
       data: {},
     };
   }
+
   render() {
     const pokemonNames = Object.keys(pokemonMetadata);
     console.log(this.state.searchTerm)
@@ -50,22 +31,23 @@ class App extends Component {
             style={{ width: 200 }}
             onChange={e => this.setState({searchTerm: e.target.value.toLowerCase()})}
           />
-        <div className = "notContainer">
-           <Route path="/:name" component={Child} />
-           <Route exact path="/" render={()=>(
-             <Body
-               searchTerm = {this.state.searchTerm}
-               pokemonNames = {pokemonNames}
-             />
-         )}/>
-          </div>
+          <div className = "notContainer">
+            <Route path="/:name" component={PokeShow} />
+            <Route exact path="/" render={() => (
+              <Body
+                searchTerm = {this.state.searchTerm}
+                pokemonNames = {pokemonNames}
+              />
+            )}
+          />
         </div>
-      </Router>
+      </div>
+    </Router>
     );
   }
 }
 
-const Child = ({ match }) => (
+const PokeShow = ({ match }) => (
   <div>
     <h3>ID: {match.params.name}</h3>
   </div>
@@ -91,7 +73,7 @@ function PokemonCard(props) {
         width="100%"
         src={props.imgSource}
       />
-    <Link to={props.name}>Show Me More</Link>
+      <Link to={props.name}>Show Me More</Link>
     </Card>
   )
 }
@@ -117,4 +99,5 @@ function Body(props){
     </div>
   )
 }
+
 export default App;
